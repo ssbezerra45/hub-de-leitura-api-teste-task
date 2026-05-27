@@ -33,10 +33,11 @@ Cypress.Commands.add('geraToken', (email, senha) => {
             password: senha
         }
     }).then((response) => {
-       expect(response.status).to.equal(200) 
+        expect(response.status).to.equal(200)
        return response.body.token
     })
- })
+    })
+ 
 
  Cypress.Commands.add('cadastrarUsuario', (nome, email, senha) =>{
         cy.api({
@@ -51,4 +52,19 @@ Cypress.Commands.add('geraToken', (email, senha) => {
             expect(response.status).to.equal(201)
             return response.body.user.id
         })
+ })
+ Cypress.Commands.add('cadastrarLivro', (titulo, autor, categoria, token) => {
+    cy.api({
+        method: 'Put',
+        url: '/books',
+        headers: {"Authorization": token},
+        body: {
+            title: titulo,
+            author: autor,
+            category: categoria,
+        },
+    }).then(response => {
+        expect(response.status).to.equal(201)
+        return response.body.book.id
+    })
  })
